@@ -22,9 +22,9 @@ public class PlayerJumpState : PlayerAirState
     {
         base.PhysicsUpdate();
 
-        if(stateMachine.Player.Controller.velocity.y <= 0)
+        if(stateMachine.Player.Controller.velocity.y <= 0) //velocity는 변화량, velocity의 y값이 0보다 낮아졌다면 이전 위치값보다 내려갔다는 거다.
         {
-            stateMachine.ChangeState(stateMachine.IdleState);
+            stateMachine.ChangeState(stateMachine.FallState); 
             return;
         }
     }

@@ -29,6 +29,13 @@ public class PlayerGroundState : PlayerBaseState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+
+        //땅에 있는 평소의 중력 값보다 작아지면 땅에 붙어있다 떨어지고 있다 생각할 수 있음
+        if (!stateMachine.Player.Controller.isGrounded && stateMachine.Player.Controller.velocity.y < Physics.gravity.y * Time.fixedDeltaTime)
+        {
+            stateMachine.ChangeState(stateMachine.FallState);
+            return;
+        }
     }
 
     //키보드에 떼면 호출됨 

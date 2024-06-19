@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class ForceReceiver : MonoBehaviour
 {
-    //중력 관련
+    //Physics 이용, 물리효과 구현
     //Physics.gravity <- (0, -9.8, 0) 중력은 아래로 작용함
     
     [SerializeField] private CharacterController controller; //CharacterController에 땅에 붙어 있는지 여부를 판단해줄 수 있는 값이 있음
     [SerializeField] private float drag = 0.3f;
+    
+    private float verticalVelocity; //수직으로 영향을 받는 Velocity
 
-    private Vector3 dampingVelocity;
-    private Vector3 impact;
-    private float verticalVelocity; //새로로 영향을 받는 Velocity
-
-    public Vector3 Movement => impact + Vector3.up * verticalVelocity; 
+    public Vector3 Movement => Vector
 
     private void Start()
     {
@@ -23,7 +21,7 @@ public class ForceReceiver : MonoBehaviour
 
     void Update()
     {
-        if (verticalVelocity < 0f && controller.isGrounded) //땅바닥에 붙어있다면 일반적인 중력가속도 자체만 가지고 있음 9.8의 힘만 유지하고 있음
+        if (controller.isGrounded) //땅바닥에 붙어있다면 일반적인 중력가속도 자체만 가지고 있음 9.8의 힘만 유지하고 있음
         {
             verticalVelocity = Physics.gravity.y * Time.deltaTime;
         } 
@@ -31,19 +29,6 @@ public class ForceReceiver : MonoBehaviour
         {
             verticalVelocity += Physics.gravity.y * Time.deltaTime;
         }
-
-        impact = Vector3.SmoothDamp(impact, Vector3.zero, ref dampingVelocity, drag);
-    }
-
-    public void Reset()
-    {
-        impact = Vector3.zero;
-        verticalVelocity = 0f;
-    }
-
-    public void AddForce(Vector3 force)
-    {
-        impact += force;
     }
 
     public void Jump(float jumpForce)
